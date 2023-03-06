@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.input-text {
+    @apply font-semibold placeholder:font-normal bg-white dark:bg-slate-600 rounded shadow-lg focus:outline-none active:outline-none;
+}
