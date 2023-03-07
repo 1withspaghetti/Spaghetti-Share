@@ -5,6 +5,7 @@ import HomeView from '@/views/HomeView.vue'
 import FolderView from '@/views/home/dashboard/FolderView.vue';
 import UploadView from './views/home/UploadView.vue';
 import EditView from './views/home/EditView.vue';
+import MediaView from './views/home/dashboard/MediaView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,8 +30,8 @@ const router = createRouter({
                             component: FolderView 
                         },
                         {
-                            path: 'search',
-                            component: FolderView // TODO ADD SEARCH COMP HERE
+                            path: 'media',
+                            component: MediaView
                         }
                     ]
                 },

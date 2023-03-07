@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import { fileTypes } from '@/types';
 
 var filtersOpen = ref(false);
 
@@ -33,18 +34,13 @@ var searchFilters = ref({
                     <span class="ml-1">Filters</span>
                 </div>
             </div>
-            <div class="overflow-hidden w-full max-w-4xl" :class="filtersOpen ? 'h-auto' : 'h-0'">
+            <div class="overflow-hidden w-full max-w-4xl transition-[height]" :class="filtersOpen ? 'h-auto lg:h-12' : 'h-0'">
                 <div class="flex flex-wrap justify-center gap-2 px-3 py-2 items-center rounded shadow font-semibold bg-slate-100 dark:bg-slate-700">
                     <div>
                         <label for="file_type">File Type: </label>
                         <select names="file_type" id="file_type" v-model="searchFilters.fileType" class="input-text px-1 pb-1 ml-2">
                             <option value="">All</option>
-                            <option value="png">.png</option>
-                            <option value="jpg">.jpg</option>
-                            <option value="webp">.webp</option>
-                            <option value="gif">.gif</option>
-                            <option value="mp4">.mp4</option>
-                            <option value="mov">.mov</option>
+                            <option v-for="ext in Object.keys(fileTypes)" :value="ext">.{{ ext }}</option>
                         </select>
                     </div>
                     <div>

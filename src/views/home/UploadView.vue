@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
+import { fileTypes } from '@/types';
 
 const MAX_FILE_SIZE = 50000000; // 50 mb
 const URL_REGEX = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
@@ -62,7 +63,7 @@ function startUpload() {
             <div class="flex flex-col md:flex-row justify-center items-center">
                 <div class="flex items-center">
                     <label for="file-upload" class="px-4 py-1 text-lg font-semibold text-center bg-white dark:bg-slate-600 rounded shadow-md cursor-pointer">Select File</label>
-                    <input type="file" id="file-upload" name="file-upload" ref="fileInput" accept=".png,.jpg,.webp,.gif,.mp4,.mov" class="hidden" v-on:change="onFileChange">
+                    <input type="file" id="file-upload" name="file-upload" ref="fileInput" :accept="Object.keys(fileTypes).map((v)=>{return '.'+v}).join(',')" class="hidden" v-on:change="onFileChange">
                 </div>
                 <div class="m-3 text-xl font-bold">OR</div>
                 <input type="url" id="url-upload" name="url-upload" ref="urlInput" placeholder="Upload from URL" autocomplete="off" v-model="url" v-on:input="onUrlChange"
