@@ -46,7 +46,7 @@ function removeTag(tag: string) {
                 <div class="w-full min-w-[256px]">
                     <div class="flex flex-wrap gap-2">
                         <div v-for="tag in tags" :key="tag" title="Click to delete" @click="removeTag(tag)"
-                            class="px-2 rounded shadow bg-slate-300 dark:bg-slate-600 hover:text-red-700 hover:dark:text-red-400 cursor-pointer">{{ tag }}</div>
+                            class="px-2 rounded shadow bg-slate-300 dark:bg-slate-600 hover:text-red-700 hover:dark:text-red-400 transition-colors duration-100 cursor-pointer">{{ tag }}</div>
                     </div>
                     <form class="flex my-3 gap-2" @submit.prevent="addTag">
                         <input type="text" class="w-44 px-2 input-text" placeholder="Add Tag" v-model="tagInput" maxlength="25">

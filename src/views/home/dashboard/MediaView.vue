@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { fileTypes } from '@/types';
+import type { FileData } from '@/types';
+import Media from '@/components/Media.vue';
 
-var files = ref([
+var files = ref<FileData[]>([
     {
         id: 1,
         name: "Mountain Stars",
@@ -46,10 +47,7 @@ var files = ref([
         <div class="p-8 max-w-7xl flex flex-wrap gap-5 justify-center">
             <div v-for="(fileData, index) in files" class="text-center" :data-id="fileData.id">
                 <div class="relative">
-                    <img v-if="fileTypes[fileData.type].startsWith('image')" :src="fileData.src" loading="lazy" class="max-w-[16rem] max-h-[12rem] bg-slate-200 dark:bg-slate-700 shadow-md rounded-lg">
-                    <video v-if="fileTypes[fileData.type].startsWith('video')" controls class="max-w-[16rem] max-h-[12rem] bg-slate-200 dark:bg-slate-700 shadow-md rounded-lg">
-                        <source :src="fileData.src" :type="fileTypes[fileData.type]">
-                    </video>
+                    <Media :file="fileData" max-w="16rem" max-h="12rem" />
                 </div>
                 <div class="font-semibold">{{ fileData.name }}</div>
                 <div class="text-sm text-slate-800 dark:text-slate-400 -mt-1">{{ fileData.type }} - {{ fileData.date }}</div>

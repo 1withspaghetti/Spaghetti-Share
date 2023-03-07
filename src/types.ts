@@ -7,3 +7,11 @@ export const fileTypes: {[key: string]: string} = {
     mp4: "video/mp4",
     webm: "video/webm"
 }
+
+export interface FileData {
+    id: number,
+    name: string,
+    src: string,
+    type: string,
+    date: string
+}
