@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import MediaDisplay from '@/components/MediaDisplay.vue';
+import type { FileData } from '@/types';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router'
 
@@ -6,13 +8,14 @@ var route = useRoute();
 
 var error = ref("");
 
-var fileName = ref("Mountain View");
+var file = ref<FileData>({
+    id: 1,
+    name: "Mountain Stars",
+    src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW91bnRhaW58ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+    type: "png",
+    date: "3/6/2023"
+});
 var tags = ref(["mountain","photography","night","sky","stars"]);
-var id = ref("id");
-var extension = ref("png")
-
-
-id.value = (typeof route.params.id === 'string' ? route.params.id : route.params.id[0]);
 
 var tagInput = ref("");
 function addTag() {
@@ -37,12 +40,12 @@ function removeTag(tag: string) {
         </div>
         <div class="w-full flex flex-col items-center max-w-2xl p-5 bg-slate-100 dark:bg-slate-700 rounded-lg shadow-lg">
             <div class="max-w-lg max-h-[64rem] my-3">
-                <input type="text" id="file-name" name="file-name" placeholder="File Name" title="File Name - Click to edit" autocomplete="off" v-model="fileName" 
+                <input type="text" id="file-name" name="file-name" placeholder="File Name" title="File Name - Click to edit" autocomplete="off" v-model="file.name" 
                     class="w-full min-w-[256px] mb-1 px-2 pb-1 text-2xl font-semibold bg-transparent transition-colors duration-100 rounded focus:bg-slate-200 hover:bg-slate-200 focus:dark:bg-slate-600 hover:dark:bg-slate-600 focus:shadow focus:outline-none active:outline-none">
                 
-                <img class="mx-auto rounded shadow-lg" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW91bnRhaW58ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60">
-                
-                <div class="my-1 font-semibold text-slate-800 dark:text-slate-400">ID: {{ id }} - Type: {{ extension.toUpperCase() }}</div>
+                <MediaDisplay :file="file" />
+                                
+                <div class="my-1 font-semibold text-slate-800 dark:text-slate-400">ID: {{ file.id }} - Type: {{ file.type.toUpperCase() }}</div>
                 <div class="w-full min-w-[256px]">
                     <div class="flex flex-wrap gap-2">
                         <div v-for="tag in tags" :key="tag" title="Click to delete" @click="removeTag(tag)"

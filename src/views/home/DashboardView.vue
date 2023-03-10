@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { fileTypes, type FileData } from '@/types';
-import Media from '@/components/Media.vue';
+import MediaResult from '@/components/MediaResult.vue';
 
 var filtersOpen = ref(false);
 
@@ -57,12 +57,6 @@ var files = ref<FileData[]>([
     }
 ]);
 
-var selectedFile = ref<FileData|null>(null);
-
-watch(selectedFile, (val)=>{
-    console.log("File selected: "+val?.name)
-})
-
 </script>
 
 <template>
@@ -109,11 +103,7 @@ watch(selectedFile, (val)=>{
         <div class="w-full flex justify-center">
             <div class="p-8 max-w-7xl flex flex-wrap gap-5 justify-center">
                 <div v-for="(fileData, index) in files" :key="fileData.id" class="text-center" :data-id="fileData.id">
-                    <div class="relative">
-                        <Media :file="fileData" max-w="16rem" max-h="12rem" @selected="selectedFile = fileData" />
-                    </div>
-                    <div class="font-semibold">{{ fileData.name }}</div>
-                    <div class="text-sm text-slate-800 dark:text-slate-400 -mt-1">{{ fileData.type }} - {{ fileData.date }}</div>
+                    <MediaResult :file="fileData" max-w="16rem" max-h="12rem" />
                 </div>
             </div>
         </div>

@@ -14,7 +14,7 @@ import { RouterLink } from 'vue-router'
             <RouterLink class="block font-semibold text-red-500 px-3 py-2" to="/login">Log out</RouterLink>
         </div>
     </div>
-    <div class="w-full h-[calc(100vh-52px)] overflow-hidden relative">
+    <div class="w-full h-[calc(100vh-52px)] relative">
         <RouterView />
     </div>
 </template>
