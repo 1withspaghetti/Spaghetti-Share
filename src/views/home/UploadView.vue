@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import { fileTypes } from '@/types';
+import axios, { AxiosError } from 'axios';
+import router from '@/router';
 
-const MAX_FILE_SIZE = 50000000; // 50 mb
+const MAX_FILE_SIZE = 8000000; // 8 mb
 const URL_REGEX = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
 
 var fileInput = ref<HTMLInputElement | null>(null);
@@ -13,7 +15,7 @@ var error = ref("");
 const url = ref(null);
 function onFileChange(e: any) {
     if (e.target?.files[0].size > MAX_FILE_SIZE) {
-        error.value = "File too large! Must be less then 50mb";
+        error.value = "File too large! Must be less then 8mb";
         e.target.value = null;
     } else {
         startUpload();
@@ -32,11 +34,24 @@ var uploadPercent = ref(42);
 
 function startUpload() {
     error.value = ""
-    if (fileInput.value?.value) {
+    if (fileInput.value?.files) {
         uploading.value = true;
         uploadPercent.value = 0;
 
-        // TODO: Upload file to server
+        var file = new FormData();
+        file.append("media", fileInput.value.files[0])
+        axios.post('/api/v1/media/upload', file, {
+            headers: {
+                "Content-Type": 'multipart/form-data'
+            },
+            onUploadProgress: (e)=>{
+                uploadPercent.value = (e.progress || 0) * 100;
+            }
+        }).then((res)=>{
+            router.push('/dashboard/edit/'+res.data.id);
+        }).catch((err: AxiosError<any, any>)=>{
+            error.value = err.response?.data.reason || err.message;
+        })
 
     } else if (urlInput.value?.value) {
         uploading.value = true;
@@ -74,7 +89,7 @@ function startUpload() {
         </div>
 
         <div :class="{hidden: !uploading}" class="w-full text-center max-w-2xl pt-5 overflow-hidden bg-slate-100 dark:bg-slate-700 rounded-lg shadow-lg">
-            <div class="text-2xl font-bold mb-3">Uploading... {{ uploadPercent }}%</div>
+            <div class="text-2xl font-bold mb-3">Uploading... {{ uploadPercent.toFixed(0) }}%</div>
             <div v-if="error" class="text-xl font-semibold text-red-500">Error: {{ error }}</div>
             <div class="h-[6px] mt-3 bg-green-500 transition-all duration-75" :style="`width: ${uploadPercent}%;`"></div>
         </div>
