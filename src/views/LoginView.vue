@@ -18,6 +18,7 @@
                 <input type="password" placeholder="Password" autocomplete="current-password" v-model="password" class="max-w-[192px] font-semibold pt-1 px-2 bg-white dark:bg-slate-600 dark:border-slate-800 rounded shadow focus:outline-none active:outline-none border-b-[3px] focus:border-blue-500 transition-colors">
                 <button type="submit" class="px-2 py-1 rounded shadow bg-blue-500 text-white font-semibold">Continue</button>
             </div>
+            <div v-if="error" class="text-lg font-semibold text-red-500 mt-3">Error: {{ error }}</div>
         </form>
     </div>
 </template>
@@ -25,17 +26,23 @@
 <script setup lang="ts">
 import ThemeSwitch from '@/components/ThemeSwitch.vue';
 import router from '@/router';
+import axios, { AxiosError } from 'axios';
 import { ref } from 'vue'
 
 var username = ref("");
 var password = ref("");
 
-function login(e: Event) {
+var error = ref("");
+
+async function login(e: Event) {
     console.log("Authenticating...");
 
-    // TODO: Log user in
-
-    router.push("/");
+    axios.post("/api/v1/auth/login", {'username': username.value, 'password': password.value})
+    .then((res)=>{
+        router.push("/dashboard");
+    }).catch((err: AxiosError<any, any>)=>{
+        error.value = err.response?.data.reason || (err.response?.status + " " + err.response?.statusText);
+    });
 }
 
 </script>
