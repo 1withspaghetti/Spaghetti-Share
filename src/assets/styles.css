@@ -5,3 +5,6 @@
 .input-text {
     @apply font-semibold placeholder:font-normal bg-white dark:bg-slate-600 rounded shadow focus:outline-none active:outline-none;
 }
+.login-input {
+    @apply max-w-[256px] font-semibold pt-1 px-2 bg-white dark:bg-slate-600 dark:border-slate-800 rounded shadow focus:outline-none active:outline-none border-b-[3px] focus:border-blue-500 dark:focus:border-blue-500 transition-colors;
+}

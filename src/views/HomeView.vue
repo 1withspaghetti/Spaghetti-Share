@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ThemeSwitch from '@/components/ThemeSwitch.vue';
-import { RouterLink } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
@@ -15,6 +15,10 @@ import { RouterLink } from 'vue-router'
         </div>
     </div>
     <div class="w-full h-[calc(100vh-52px)] relative">
-        <RouterView />
+        <router-view v-slot="{ Component }">
+            <keep-alive include="DashboardView">
+                <component :is="Component" />
+            </keep-alive>
+        </router-view>
     </div>
 </template>
