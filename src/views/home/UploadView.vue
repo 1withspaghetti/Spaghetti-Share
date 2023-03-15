@@ -30,11 +30,11 @@ function onUrlChange(e: any) {
 }
 
 var uploading = ref(false);
-var uploadPercent = ref(42);
+var uploadPercent = ref(0);
 
 function startUpload() {
     error.value = ""
-    if (fileInput.value?.files) {
+    if (fileInput.value?.files && fileInput.value?.files[0]) {
         uploading.value = true;
         uploadPercent.value = 0;
 
@@ -54,10 +54,37 @@ function startUpload() {
         })
 
     } else if (urlInput.value?.value) {
-        uploading.value = true;
-        uploadPercent.value = 0;
+        if (!URL_REGEX.test(urlInput.value.value)) {
+            error.value = "Invalid URL"
+            return;
+        }
 
-        // TODO: Send url to server
+        axios.post('/api/v1/media/upload/url', {url: urlInput.value.value}).then((res)=>{
+            console.log("uploading");
+            uploading.value = true;
+            uploadPercent.value = 0;
+
+            const id = res.data.id;
+
+            var check = setInterval(()=>{
+                axios.get('/api/v1/media/upload/progress?id='+id).then((res)=>{
+                    uploadPercent.value = res.data.progress.value * 100;
+                    if (res.data.progress.completed) {
+                        clearInterval(check);
+                        router.push('/dashboard/edit/'+id);
+                    }
+                    if (res.data.progress.error) {
+                        clearInterval(check);
+                        error.value = "An unknown error occurred while uploading, please try again"
+                    }
+                }).catch((err: AxiosError<any, any>)=>{
+                    clearInterval(check);
+                    error.value = err.response?.data.reason || err.message;
+                })
+            }, 500);
+        }).catch((err: AxiosError<any, any>)=>{
+            error.value = err.response?.data.reason || err.message;
+        })
 
     } else {
         error.value = "You must provide a file or url to upload";
