@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import ThemeSwitch from '@/components/ThemeSwitch.vue';
-import { RouterLink, RouterView } from 'vue-router'
+import router from '@/router';
+import axios, { AxiosError } from 'axios';
+import { RouterView } from 'vue-router'
+
+function logout() {
+    axios.get('/api/v1/auth/logout').then((res)=>{
+        router.push('/login');
+    }).catch((err: AxiosError)=>{
+        if (err.response?.status == 401) router.push('/login');
+    })
+}
 </script>
 
 <template>
@@ -11,7 +21,7 @@ import { RouterLink, RouterView } from 'vue-router'
         </div>
         <div class="flex w-max items-center whitespace-nowrap" style="justify-self: flex-end;">
             <ThemeSwitch />
-            <RouterLink class="block font-semibold text-red-500 px-3 py-2" to="/login">Log out</RouterLink>
+            <div class="block font-semibold cursor-pointer text-red-500 px-3 py-2" @click="logout">Log out</div>
         </div>
     </div>
     <div class="w-full h-[calc(100vh-52px)] relative">

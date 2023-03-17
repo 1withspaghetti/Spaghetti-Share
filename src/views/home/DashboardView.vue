@@ -19,43 +19,7 @@ var searchFilters = ref({
     }
 });
 
-var files = ref<FileData[]>([
-    {
-        id: 1,
-        name: "Mountain Stars",
-        src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW91bnRhaW58ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
-        type: "png",
-        date: "3/6/2023"
-    },
-    {
-        id: 2,
-        name: "City Skyline",
-        src: "https://images.unsplash.com/photo-1677966039656-a681a0fe59b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw2fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
-        type: "png",
-        date: "3/6/2023"
-    },
-    {
-        id: 3,
-        name: "House on a hill",
-        src: "https://images.unsplash.com/photo-1677932394762-64ff2b2250be?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
-        type: "png",
-        date: "3/6/2023"
-    },
-    {
-        id: 4,
-        name: "Waterfall",
-        src: "https://images.unsplash.com/photo-1678061642713-a678534577e8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60",
-        type: "png",
-        date: "3/6/2023"
-    },
-    {
-        id: 5,
-        name: "Griffin Moment",
-        src: "https://cdn.discordapp.com/attachments/1041505295169507398/1082365162641694730/2023-03-06_00-19-21.mp4",
-        type: "mp4",
-        date: "3/5/2023"
-    }
-]);
+var files = ref<FileData[]>([]);
 
 </script>
 
