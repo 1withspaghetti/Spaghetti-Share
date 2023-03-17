@@ -15,7 +15,7 @@ var videoLoaded = ref(false);
 </script>
 
 <template>
-    <img v-if="fileTypes[file.type].startsWith('image')" :src="file.src" loading="lazy" class="media" :style="{maxWidth: maxW, maxHeight: maxH}" @click="emit('click');">
+    <img v-if="fileTypes[file.type].startsWith('image')" :src="'/media/'+file.id+'.'+file.type" loading="lazy" class="media" :style="{maxWidth: maxW, maxHeight: maxH}" @click="emit('click');">
         
     <div v-if="fileTypes[file.type].startsWith('video') && !videoLoaded" class="relative" 
         @click.stop="videoLoaded = true;">
@@ -28,7 +28,7 @@ var videoLoaded = ref(false);
     </div>
     <div v-if="fileTypes[file.type].startsWith('video') && videoLoaded" @click="emit('click');">
         <video controls autoplay disablepictureinpicture class="media" :style="{maxWidth: maxW, maxHeight: maxH}">
-            <source :src="file.src" :type="fileTypes[file.type]">
+            <source :src="'/media/'+file.id+'.'+file.type" :type="fileTypes[file.type]">
         </video>
     </div>
 </template>

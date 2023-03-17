@@ -11,7 +11,6 @@ export const fileTypes: {[key: string]: string} = {
 export interface FileData {
     id: number,
     name: string,
-    src: string,
     type: string,
-    date: string
+    time: string
 }
