@@ -4,7 +4,7 @@ import { fileTypes } from '@/types';
 import axios, { AxiosError } from 'axios';
 import router from '@/router';
 
-const MAX_FILE_SIZE = 8000000; // 8 mb
+const MAX_FILE_SIZE = 8388608; // 8 MB
 const URL_REGEX = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
 
 var fileInput = ref<HTMLInputElement | null>(null);

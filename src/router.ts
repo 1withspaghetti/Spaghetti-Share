@@ -75,9 +75,11 @@ router.beforeEach((to, from, next)=>{
     else {
         axios.get('/api/v1/auth/refresh').then(()=>{
             isLoggedIn = true;
+            hasLoaded = true;
             next();
         }).catch((err)=>{
             isLoggedIn = false;
+            hasLoaded = true;
             next();
         })
     }
