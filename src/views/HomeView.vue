@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import ThemeSwitch from '@/components/ThemeSwitch.vue';
-import router from '@/router';
+import router, { setLoggedIn } from '@/router';
 import axios, { AxiosError } from 'axios';
 import { RouterView } from 'vue-router'
 
 function logout() {
     axios.get('/api/v1/auth/logout').then((res)=>{
+        setLoggedIn(false);
         router.push('/login');
     }).catch((err: AxiosError)=>{
         if (err.response?.status == 401) router.push('/login');

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import router from '@/router';
+import router, { setLoggedIn } from '@/router';
 import axios, { AxiosError } from 'axios';
 import { ref } from 'vue';
 
@@ -13,6 +13,7 @@ async function login(e: Event) {
 
     axios.post("/api/v1/auth/login", {'username': username.value, 'password': password.value})
     .then((res)=>{
+        setLoggedIn(true);
         router.push("/dashboard");
     }).catch((err: AxiosError<any, any>)=>{
         error.value = err.response?.data.reason || (err.response?.status + " " + err.response?.statusText);

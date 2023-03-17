@@ -8,6 +8,7 @@ import EditView from './views/home/EditView.vue';
 import DefaultView from '@/views/DefaultView.vue';
 import LoginView from '@/views/default/LoginView.vue';
 import RegisterView from './views/default/RegisterView.vue';
+import axios from 'axios';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,8 +20,7 @@ const router = createRouter({
                 {
                     path: '',
                     redirect: (to: RouteLocation): string => {
-                        // TODO check if authenticated
-                        return '/dashboard';
+                        return isLoggedIn ? '/dashboard' : '/login';
                     },
                 },
                 {
@@ -36,6 +36,10 @@ const router = createRouter({
         {
             path: '/dashboard',
             component: HomeView,
+            beforeEnter(to, from, next) {
+                if (!isLoggedIn) next('/login');
+                else next();
+            },
             children: [
                 {
                     path: '',
@@ -53,6 +57,32 @@ const router = createRouter({
             ]
         }
     ]
+});
+export default router
+
+var hasLoaded = false;
+var isLoggedIn = false;
+
+setInterval(()=>{
+    if (document.cookie.includes("session-token"))
+        axios.get('/api/v1/auth/refresh').then(()=>{
+            console.log("Session token refreshed")
+        });
+}, 300000) // 5 minutes
+
+router.beforeEach((to, from, next)=>{
+    if (hasLoaded) next();
+    else {
+        axios.get('/api/v1/auth/refresh').then(()=>{
+            isLoggedIn = true;
+            next();
+        }).catch((err)=>{
+            isLoggedIn = false;
+            next();
+        })
+    }
 })
   
-export default router
+export function setLoggedIn(val: boolean) {
+    isLoggedIn = !!val;
+}
