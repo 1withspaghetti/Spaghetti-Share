@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { fileTypes, type FileData } from '@/types';
 import MediaResult from '@/components/MediaResult.vue';
+import Notification from '@/components/Notification.vue';
 import axios from 'axios';
 
 var filtersOpen = ref(false);
@@ -32,6 +33,8 @@ function fetchMedia() {
 
 var files = ref<FileData[]>([]);
 fetchMedia();
+
+var notification = ref({success: false, msg: "", time: 0});
 
 </script>
 
@@ -79,9 +82,10 @@ fetchMedia();
         <div class="w-full flex justify-center">
             <div class="p-8 max-w-7xl flex flex-wrap gap-5 justify-center">
                 <div v-for="(fileData, index) in files" :key="fileData.id" class="flex flex-col items-center" :data-id="fileData.id">
-                    <MediaResult :file="fileData" max-w="16rem" max-h="12rem" />
+                    <MediaResult :file="fileData" max-w="16rem" max-h="12rem" @notify="(success, msg)=>{notification = {success, msg, time: Date.now()}}" />
                 </div>
             </div>
         </div>
     </div>
+    <Notification v-bind="notification" />
 </template>
