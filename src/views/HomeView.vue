@@ -25,7 +25,7 @@ function logout() {
             <div class="block font-semibold cursor-pointer text-red-500 px-3 py-2" @click="logout">Log out</div>
         </div>
     </div>
-    <div class="w-full h-[calc(100vh-52px)] relative">
+    <div class="w-full relative">
         <router-view v-slot="{ Component }">
             <keep-alive include="DashboardView">
                 <component :is="Component" />

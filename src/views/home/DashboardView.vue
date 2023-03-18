@@ -78,7 +78,7 @@ fetchMedia();
         </div>
         <div class="w-full flex justify-center">
             <div class="p-8 max-w-7xl flex flex-wrap gap-5 justify-center">
-                <div v-for="(fileData, index) in files" :key="fileData.id" class="text-center" :data-id="fileData.id">
+                <div v-for="(fileData, index) in files" :key="fileData.id" class="flex flex-col items-center" :data-id="fileData.id">
                     <MediaResult :file="fileData" max-w="16rem" max-h="12rem" />
                 </div>
             </div>
