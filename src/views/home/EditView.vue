@@ -2,7 +2,7 @@
 import MediaDisplay from '@/components/MediaDisplay.vue';
 import type { FileData } from '@/types';
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useRoute, onBeforeRouteUpdate, type RouteLocationNormalized, type NavigationGuardNext } from 'vue-router'
 
 onMounted(()=>{
@@ -16,30 +16,49 @@ onBeforeRouteUpdate(async (to, from, next)=>{
 var file = ref<FileData|undefined>();
 
 var error = ref("");
-var tags = ref(["mountain","photography","night","sky","stars"]);
+
+var tags = ref<string[]>([]);
 
 function loadData(id: string|string[], next: ()=>any) {
     axios.get("/api/v1/media/data?id="+id).then((res)=>{
         file.value = res.data.media;
+        tags.value = (res.data.media.tags as string).split(' ').filter(tag=>!!tag);
         error.value = "";
         next();
     }).catch((err)=>{
         file.value = undefined;
+        tags.value = [];
         error.value = err.response?.data.reason || (err.response?.status + " " + err.response?.statusText);
         next();
     });
 }
 
+let debounceTimer: number|undefined = undefined;
+function saveData() {
+    if (debounceTimer) clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(()=>{
+        axios.post('/api/v1/media/edit', {id: file.value?.id, name: file.value?.name, tags: tags.value}).then((res)=>{
+            console.log("Data updated");
+            error.value = "";
+        }).catch((err)=>{
+            error.value = err.response?.data.reason || (err.response?.status + " " + err.response?.statusText);
+        })
+    }, 500)
+}
+
 var tagInput = ref("");
 function addTag() {
-    if (!tags.value.includes(tagInput.value)) {
-        tags.value.push(tagInput.value);
+    var val = tagInput.value.toLowerCase().replace(/[^a-z\-]+/g, "");
+    if (val && !tags.value.includes(val)) {
+        tags.value.push(val);
         tags.value.sort();
+        saveData();
     }
     tagInput.value = "";
 }
 function removeTag(tag: string) {
     if (tags.value.includes(tag)) tags.value.splice(tags.value.indexOf(tag) ,1);
+    saveData();
 }
 
 
@@ -68,7 +87,7 @@ function copyLink(file: FileData) {
         </div>
         <div class="w-full flex flex-col items-center max-w-2xl p-5 bg-slate-100 dark:bg-slate-700 rounded-lg shadow-lg">
             <div v-if="file">
-                <input type="text" id="file-name" name="file-name" placeholder="File Name" title="File Name - Click to edit" autocomplete="off" v-model="file.name" 
+                <input type="text" id="file-name" name="file-name" placeholder="File Name" title="File Name - Click to edit" autocomplete="off" v-model="file.name" @input="saveData"
                     class="w-full min-w-[256px] mb-1 px-2 pb-1 text-2xl font-semibold bg-transparent transition-colors duration-100 rounded focus:bg-slate-200 hover:bg-slate-200 focus:dark:bg-slate-600 hover:dark:bg-slate-600 focus:shadow focus:outline-none active:outline-none">
                 
                 <MediaDisplay :file="file" max-w="32rem" max-h="32rem" />
