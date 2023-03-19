@@ -15,7 +15,7 @@ function logout() {
 </script>
 
 <template>
-    <div class="w-full h-[52px] flex sticky top-0 bg-slate-100 dark:bg-slate-900 shadow-lg">
+    <div class="w-full h-[52px] flex sticky top-0 z-30 bg-slate-100 dark:bg-slate-900 shadow-lg">
         <div class="flex w-full ml-3 sm:justify-center items-center">
             <h1 class="text-2xl font-semibold">Spaghetti Share</h1>
             <img class="inline-block h-9 ml-2" src="/imgs/duck.png">

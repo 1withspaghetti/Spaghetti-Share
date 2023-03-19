@@ -92,13 +92,13 @@ var notification = ref({success: false, msg: "", time: 0});
             </router-link>
         </div>
         <div class="w-full flex flex-col items-center max-w-2xl p-5 bg-slate-100 dark:bg-slate-700 rounded-lg shadow-lg">
-            <div v-if="file">
+            <div v-if="file" class="flex flex-col items-center">
                 <input type="text" id="file-name" name="file-name" placeholder="File Name" title="File Name - Click to edit" autocomplete="off" v-model="file.name" @input="saveData"
                     class="w-full min-w-[256px] mb-1 px-2 pb-1 text-2xl font-semibold bg-transparent transition-colors duration-100 rounded focus:bg-slate-200 hover:bg-slate-200 focus:dark:bg-slate-600 hover:dark:bg-slate-600 focus:shadow focus:outline-none active:outline-none">
-                
-                <MediaDisplay :file="file" max-w="32rem" max-h="32rem" />
-                                
-                <div class="my-1 font-semibold text-slate-800 dark:text-slate-400">ID: {{ file.id }} - Type: {{ file.type.toUpperCase() }}</div>
+                <div>
+                    <MediaDisplay :file="file" max-w="32rem" max-h="32rem" />   
+                    <div class="my-1 font-semibold text-slate-800 dark:text-slate-400">ID: {{ file.id }} - Type: {{ file.type.toUpperCase() }}</div>
+                </div>
             </div>
             <div v-if="file" class="flex flex-col items-center">
                 <div class="flex flex-wrap gap-2">

@@ -17,7 +17,7 @@ watch(props, ()=>{
 </script>
 
 <template>
-    <div class="fixed top-0 right-0 m-5 px-3 py-2 rounded-lg shadow-lg text-white font-semibold transition-[right]" :class="{'bg-green-500': props.success, 'bg-red-500': !props.success}" :style="{'right': shown ? '0' : '-100%'}">
+    <div class="fixed top-0 right-0 z-50 m-5 px-3 py-2 rounded-lg shadow-lg text-white font-semibold transition-[right]" :class="{'bg-green-500': props.success, 'bg-red-500': !props.success}" :style="{'right': shown ? '0' : '-100%'}">
         {{ props.msg }}
     </div>
 </template>

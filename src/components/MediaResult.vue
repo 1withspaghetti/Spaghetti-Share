@@ -21,7 +21,7 @@ var fullscreen = ref(false);
 <template>
     <div class="relative overflow-hidden" :class="{'group': !fullscreen}">
         
-        <MediaDisplay :file="file" :maxW="maxW" :maxH="maxH" @click="fullscreen = true;"/>
+        <MediaDisplay :file="file" :maxW="maxW" :maxH="maxH" @click="(e)=>{fullscreen = true;if(e) e.pause();}"/>
 
         <div class="absolute top-0 right-0 flex transition-transform -translate-y-full group-hover:translate-y-0">
             <div class="button bg-green-500 hover:bg-green-600" @click="downloadImage(file)">
@@ -35,8 +35,8 @@ var fullscreen = ref(false);
             </div>
         </div>
 
-        <div v-if="fullscreen" class="fixed top-0 right-0 bottom-0 left-0 z-50 flex flex-col justify-center items-center bg-black bg-opacity-70 overflow-y-auto" @click="fullscreen = false">
-            <img v-if="fileTypes[file.type].startsWith('image')" :src="'/media/'+file.id+'.'+file.type" class="w-auto h-auto" style="max-width: 100vw; max-height: calc(100vh - 7.5rem);">
+        <div v-if="fullscreen" class="fixed top-0 right-0 bottom-0 left-0 z-40 flex flex-col justify-center items-center bg-black bg-opacity-70 overflow-y-auto" @click.self="fullscreen = false">
+            <MediaDisplay :file="file" maxW="100vw" maxH="calc(100vh - 7.5rem)"/>
             <div class="flex mt-2">
                 <div class="button px-2 bg-green-500 hover:bg-green-600" @click="downloadImage(file)">
                     <svg class="w-8 h-8" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0 0 48 48"><path d="M11 40q-1.2 0-2.1-.9Q8 38.2 8 37v-7.15h3V37h26v-7.15h3V37q0 1.2-.9 2.1-.9.9-2.1.9Zm13-7.65-9.65-9.65 2.15-2.15 6 6V8h3v18.55l6-6 2.15 2.15Z"/></svg>
