@@ -9,6 +9,8 @@ const props = defineProps<{
     file: FileData,
     maxW?: string,
     maxH?: string,
+    resizeMaxW?: number,
+    resizeMaxH?: number
 }>();
 
 var fullscreen = ref(false);
@@ -21,7 +23,7 @@ defineEmits<{
 <template>
     <div class="relative overflow-hidden" :class="{'group': !fullscreen}">
         
-        <MediaDisplay :file="file" :maxW="maxW" :maxH="maxH" @click="(e)=>{fullscreen = true;if(e) e.pause();}"/>
+        <MediaDisplay v-bind="$props" @click="(e)=>{fullscreen = true;if(e) e.pause();}"/>
 
         <div class="absolute top-0 right-0 flex transition-transform -translate-y-full group-hover:translate-y-0">
             <div class="button bg-green-500 hover:bg-green-600" @click="downloadImage(file)">
