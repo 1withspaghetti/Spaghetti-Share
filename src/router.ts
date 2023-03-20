@@ -58,6 +58,7 @@ const router = createRouter({
         },
         {
             path: '/:pathMatch(.*)*',
+            meta: { redirect: true },
             redirect: (to: RouteLocation): string => {
                 return isLoggedIn ? '/dashboard' : '/login';
             }
@@ -82,11 +83,13 @@ router.beforeEach((to, from, next)=>{
         axios.get('/api/v1/auth/refresh').then(()=>{
             isLoggedIn = true;
             hasLoaded = true;
-            next();
+            if (to.meta.redirect) next("/dashboard");
+            else next();
         }).catch((err)=>{
             isLoggedIn = false;
             hasLoaded = true;
-            next();
+            if (to.meta.redirect) next("/login");
+            else next();
         })
     }
 })

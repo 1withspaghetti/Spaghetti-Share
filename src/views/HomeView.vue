@@ -26,10 +26,6 @@ function logout() {
         </div>
     </div>
     <div class="w-full relative">
-        <router-view v-slot="{ Component }">
-            <keep-alive include="DashboardView">
-                <component :is="Component" />
-            </keep-alive>
-        </router-view>
+        <RouterView />
     </div>
 </template>

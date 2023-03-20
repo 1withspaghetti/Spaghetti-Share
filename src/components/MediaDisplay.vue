@@ -37,6 +37,6 @@ var videoThumb = ref();
 
 <style scoped>
 .media {
-    @apply bg-slate-200 dark:bg-slate-700 shadow-md rounded-lg;
+    @apply bg-slate-200 dark:bg-slate-700 shadow-md rounded-lg block w-full h-full;
 }
 </style>
