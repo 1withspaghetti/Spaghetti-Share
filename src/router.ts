@@ -55,6 +55,12 @@ const router = createRouter({
                     component: EditView
                 }
             ]
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            redirect: (to: RouteLocation): string => {
+                return isLoggedIn ? '/dashboard' : '/login';
+            }
         }
     ]
 });
