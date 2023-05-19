@@ -82,7 +82,7 @@ var notification = ref({success: false, msg: "", time: 0});
         <div class="w-full flex justify-center">
             <div class="p-8 max-w-7xl flex flex-wrap gap-5 justify-center">
                 <div v-for="(fileData, index) in files" :key="fileData.id" class="flex flex-col items-center" :data-id="fileData.id">
-                    <MediaResult :file="fileData" max-w="16rem" max-h="12rem" :resize-max-w="256" :resize-max-h="192" @notify="(success, msg)=>{notification = {success, msg, time: Date.now()}}" />
+                    <MediaResult :file="fileData" max-w="16rem" max-h="12rem" :resize-max-w="256" :resize-max-h="192" @notify="(success: boolean, msg: string)=>{notification = {success, msg, time: Date.now()}}" />
                 </div>
             </div>
         </div>

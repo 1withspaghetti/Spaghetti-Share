@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { fileTypes, type FileData } from '@/types';
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import MediaDisplay from '@/components/MediaDisplay.vue'
 import { downloadImage, copyLink, copyImage } from '@/copy'
 import MediaOptions from './MediaOptions.vue';
@@ -23,7 +23,7 @@ defineEmits<{
 <template>
     <div class="relative overflow-hidden" :class="{'group': !fullscreen}">
         
-        <MediaDisplay v-bind="$props" @click="(e)=>{fullscreen = true;if(e) e.pause();}"/>
+        <MediaDisplay v-bind="$props" @click="(e: Ref<HTMLVideoElement>)=>{fullscreen = true;if(e) e.value.pause();}"/>
 
         <div class="absolute top-0 right-0 flex transition-transform -translate-y-full group-hover:translate-y-0">
             <div class="button bg-green-500 hover:bg-green-600" @click="downloadImage(file)">
@@ -41,14 +41,13 @@ defineEmits<{
             <div class="max-w-[100vw] max-h-[80vh]">
                 <MediaDisplay :file="file"/>
             </div>
-            <div class="flex mt-2">
-                <MediaOptions :file="file"/>
-            </div>
-            <div class="flex mt-3">
-                <router-link class="button px-2 bg-gray-400 hover:bg-gray-500" :to="'/dashboard/edit/'+file.id">
-                    <svg class="w-6 h-6 my-1" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0 96 960 960"><path d="M180 876h44l443-443-44-44-443 443v44Zm614-486L666 262l42-42q17-17 42-17t42 17l44 44q17 17 17 42t-17 42l-42 42Zm-42 42L248 936H120V808l504-504 128 128Zm-107-21-22-22 44 44-22-22Z"/></svg>
-                    <span>Rename</span>
-                </router-link>
+            <div class="mt-2">
+                <MediaOptions :file="file">
+                    <router-link class="button px-2 bg-gray-400 hover:bg-gray-500" :to="'/dashboard/edit/'+file.id">
+                        <svg class="w-6 h-6 my-1" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0 96 960 960"><path d="M180 876h44l443-443-44-44-443 443v44Zm614-486L666 262l42-42q17-17 42-17t42 17l44 44q17 17 17 42t-17 42l-42 42Zm-42 42L248 936H120V808l504-504 128 128Zm-107-21-22-22 44 44-22-22Z"/></svg>
+                        <span class="ml-1">Edit</span>
+                    </router-link>
+                </MediaOptions>
             </div>
         </div>
     </div>

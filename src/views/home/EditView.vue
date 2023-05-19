@@ -4,8 +4,9 @@ import Notification from '@/components/Notification.vue';
 import type { FileData } from '@/types';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
-import { useRoute, onBeforeRouteUpdate, type RouteLocationNormalized, type NavigationGuardNext } from 'vue-router'
+import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import MediaOptions from '@/components/MediaOptions.vue';
+import router from '@/router';
 
 onMounted(()=>{
     var route = useRoute();
@@ -62,6 +63,17 @@ function removeTag(tag: string) {
     saveData();
 }
 
+var modalOpen = ref(false);
+function deleteMedia() {
+    error.value = "";
+    if (!file.value) return;
+    axios.post(`/api/v1/media/delete`, {id: file.value.id}).then((res)=>{
+        router.push('/dashboard');
+    }).catch((err)=>{
+        error.value = err.response?.data.reason || (err.response?.status + " " + err.response?.statusText);
+    })
+}
+
 var notification = ref({success: false, msg: "", time: 0});
 
 </script>
@@ -93,7 +105,27 @@ var notification = ref({success: false, msg: "", time: 0});
                 </form>
             </div>
             <div v-if="file" class="mt-2">
-                <MediaOptions :file="file" @notify="(success, msg)=>{notification = {success, msg, time: Date.now()}}"/>
+                <MediaOptions :file="file" @notify="(success: boolean, msg: string)=>{notification = {success, msg, time: Date.now()}}">
+                    <div tabindex="0" class="button px-2 bg-red-500 hover:bg-red-600" @click="modalOpen = true">
+                        <svg class="w-6 h-6 my-1" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0 96 960 960"><path d="M261 936q-24.75 0-42.375-17.625T201 876V306h-41v-60h188v-30h264v30h188v60h-41v570q0 24-18 42t-42 18H261Zm438-630H261v570h438V306ZM367 790h60V391h-60v399Zm166 0h60V391h-60v399ZM261 306v570-570Z"/></svg>
+                        <span>Delete</span>
+                    </div>
+                </MediaOptions>
+            </div>
+            <div v-if="error" class="text-xl font-semibold text-red-500">Error: {{ error }}</div>
+        </div>
+    </div>
+    <div v-if="modalOpen" class="fixed top-0 right-0 bottom-0 left-0 z-40 flex flex-col justify-center items-center bg-black bg-opacity-70 overflow-y-auto" @click.self="modalOpen = false">
+        <div class="m-4 p-6 bg-slate-100 dark:bg-slate-700 rounded-lg shadow-lg text-center">
+            <h3 class="text-xl font-bold">Are you sure you want to delete this file?</h3>
+            <div class="italic opacity-50">This cannot be undone!</div>
+            <div class="flex justify-center mt-4 gap-2">
+                <div tabindex="0" class="button px-2 py-1 bg-gray-400 hover:bg-gray-500" @click="modalOpen = false">
+                    <span>Go Back</span>
+                </div>
+                <div tabindex="0" class="button px-2 py-1 bg-red-500 hover:bg-red-600" @click="deleteMedia">
+                    <span>Delete</span>
+                </div>
             </div>
             <div v-if="error" class="text-xl font-semibold text-red-500">Error: {{ error }}</div>
         </div>
@@ -101,6 +133,8 @@ var notification = ref({success: false, msg: "", time: 0});
     <Notification v-bind="notification" />
 </template>
 
-<style>
-
+<style scoped>
+.button {
+    @apply m-1 flex items-center rounded shadow transition-colors text-white font-semibold cursor-pointer whitespace-nowrap;
+}
 </style>
