@@ -20,7 +20,7 @@ const router = createRouter({
                 {
                     path: '',
                     redirect: (to: RouteLocation): string => {
-                        return isLoggedIn ? '/dashboard' : '/login';
+                        return isLoggedIn ? '/dashboard' : '/login?auto=true';
                     },
                 },
                 {
@@ -37,7 +37,7 @@ const router = createRouter({
             path: '/dashboard',
             component: HomeView,
             beforeEnter(to, from, next) {
-                if (!isLoggedIn) next('/login');
+                if (!isLoggedIn) next('/login?auto=true');
                 else next();
             },
             children: [
@@ -60,7 +60,7 @@ const router = createRouter({
             path: '/:pathMatch(.*)*',
             meta: { redirect: true },
             redirect: (to: RouteLocation): string => {
-                return isLoggedIn ? '/dashboard' : '/login';
+                return isLoggedIn ? '/dashboard' : '/login?auto=true';
             }
         }
     ]
